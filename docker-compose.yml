@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  openldap:
+    hostname: "ldap.s3l4h.com"
+    container_name: "openldap"
+    build: "./openldap"
+    image: "janus/openldap"
+    ports:
+      - "636:636"
+      - "389:389"
+    environment:
+      - LDAP_ORGANISATION=S3l4h
+      - LDAP_DOMAIN=s3l4h.com
+      - LDAP_ADMIN_PASSWORD=admin
+      - LDAP_TLS=true
+
+      - COPY_SERVICE=1

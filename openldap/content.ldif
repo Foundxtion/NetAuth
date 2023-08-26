@@ -1,0 +1,27 @@
+dn: ou=People,dc=s3l4h,dc=com
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Groups,dc=s3l4h,dc=com
+objectClass: organizationalUnit
+ou: Groups
+
+dn: cn=storers,ou=Groups,dc=s3l4h,dc=com
+objectClass: posixGroup
+cn: storers
+gidNumber: 5000
+
+dn: uid=foundxtion,ou=People,dc=s3l4h,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: foundxtion
+sn: Schall
+givenName: Lilian
+cn: Lilian Schall
+displayName: S3l4h
+uidNumber: 10000
+gidNumber: 5000
+userPassword: {CRYPT}x
+loginShell: /run/current-system/sw/bin/zsh
+homeDirectory: /home/foundxtion
