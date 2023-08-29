@@ -8,6 +8,7 @@ services:
     ports:
       - "636:636"
       - "389:389"
+    restart: always
     environment:
       - LDAP_ORGANISATION=S3l4h
       - LDAP_DOMAIN=s3l4h.com
