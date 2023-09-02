@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   openldap:
-    hostname: "ldap.s3l4h.com"
+    hostname: "ldap.example.com"
     container_name: "openldap"
     build: "./openldap"
     image: "janus/openldap"
@@ -10,9 +10,32 @@ services:
       - "389:389"
     restart: always
     environment:
-      - LDAP_ORGANISATION=S3l4h
-      - LDAP_DOMAIN=s3l4h.com
+      - LDAP_ORGANISATION=Example
+      - LDAP_DOMAIN=example.com
       - LDAP_ADMIN_PASSWORD=admin
       - LDAP_TLS=true
+      - KRB5_KDC=EXAMPLE.COM
+      - KRB5_REALM=EXAMPLE.COM
 
       - COPY_SERVICE=1
+  kerberos:
+    hostname: "krb.example.com"
+    container_name: "kerberos"
+    build: "./kerberos"
+    image: "janus/kerberos"
+    depends_on:
+      openldap:
+        condition: service_started
+    ports:
+      - "749:749"
+      - "464:464"
+      - "88:88"
+    restart: always
+    environment:
+      - KRB5_REALM=EXAMPLE.COM
+      - KRB5_KDC=krb.example.com
+      - KRB5_MASTER_PASSWORD=master_krb
+      - LDAP_DN=dc=s3l4h,dc=com
+      - LDAP_ADMIN_PASSWORD=admin
+      - LDAP_KDC_PASSWORD=admin
+      - LDAP_URI=ldap://ldap.example.com/
