@@ -1,0 +1,18 @@
+dn: olcDatabase={1}mdb,cn=config
+changeType: modify
+add: olcDbIndex
+olcDbIndex: krbPrincipalName eq,pres,sub
+-
+add: olcAccess
+olcAccess: {2}to attrs=krbPrincipalKey
+  by anonymous auth
+  by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" read
+  by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" write
+  by self write
+  by * none
+-
+add: olcAccess
+olcAccess: {3}to dn.subtree="cn=krbContainer,{{ LDAP_BASE_DN }}"
+  by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" read
+  by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" write
+  by * none

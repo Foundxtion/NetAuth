@@ -1,27 +1,12 @@
-dn: ou=People,dc=s3l4h,dc=com
+dn: ou=People,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
 ou: People
 
-dn: ou=Groups,dc=s3l4h,dc=com
+dn: ou=Groups,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
 ou: Groups
 
-dn: cn=storers,ou=Groups,dc=s3l4h,dc=com
+dn: cn=storers,ou=Groups,{{ LDAP_BASE_DN }}
 objectClass: posixGroup
 cn: storers
 gidNumber: 5000
-
-dn: uid=foundxtion,ou=People,dc=s3l4h,dc=com
-objectClass: inetOrgPerson
-objectClass: posixAccount
-objectClass: shadowAccount
-uid: foundxtion
-sn: Schall
-givenName: Lilian
-cn: Lilian Schall
-displayName: Foundxtion
-uidNumber: 10000
-gidNumber: 5000
-userPassword: {CRYPT}x
-loginShell: /run/current-system/sw/bin/zsh
-homeDirectory: /home/foundxtion
