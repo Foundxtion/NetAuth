@@ -189,7 +189,7 @@ EOT
     if [ "$LDAP_SETUP" = "1" ]; then
         echo "Setup LDAP DN"
         retry_ldap kdb5_ldap_util -D "$LDAP_ADMIN_DN" \
-            -w "$LDAP_ADMIN_PASSWORD" create -s -r "$KRB5_REALM" \
+            -w "$LDAP_ADMIN_PASSWORD" create -subtrees "$LDAP_DN" -s -r "$KRB5_REALM" \
             -H "$LDAP_URI" -P "$KRB5_MASTER_PASSWORD"
     fi
 
