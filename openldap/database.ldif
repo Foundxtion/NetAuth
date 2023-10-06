@@ -10,16 +10,17 @@ olcAccess: {2}to attrs=krbPrincipalKey
   by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" write
   by self write
   by * none
--
+
 add: olcAccess
 olcAccess: {3}to dn.subtree="cn=krbContainer,{{ LDAP_BASE_DN }}"
   by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" read
   by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" write
   by * none
--
+
 dn: olcDatabase={1}mdb,cn=config
 add: olcAccess
-olcAccess: {4}to dn.subtree=“ou=People,{{ LDAP_BASE_DN }}”
+olcAccess: {4}to dn.subtree="ou=People,{{ LDAP_BASE_DN }}"
   by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" read
   by dn.exact="cn=admin,{{ LDAP_BASE_DN }}" write
   by * break
+
