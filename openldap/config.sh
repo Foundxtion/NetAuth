@@ -1,4 +1,21 @@
 #!/bin/sh
+ldif_folder=/container/service/slapd/assets/config/bootstrap/ldif/custom
+sasl_ldif=$ldif_folder/03-sasl.ldif
+
+echo "BASE $LDAP_BASE_DN" >> /etc/ldap/ldap.conf
+echo "SASL_MECH GSSAPI" >> /etc/ldap/ldap.conf
+
+if [ ! -f "$sasl_ldif" ]; then
+    cat > $sasl_ldif << EOF
+dn: cn=config
+changetype: modify
+replace: olcSaslRealm
+olcSaslRealm: $KRB5_REALM
+-
+replace: olcSaslSecProps
+olcSaslSecProps: none
+EOF
+fi
 
 cat > /etc/krb5.conf << EOF
 [libdefaults]

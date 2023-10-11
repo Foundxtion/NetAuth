@@ -2,9 +2,16 @@
 
 COPY_SERVICE=${COPY_SERVICE:-0}
 
-/container/config.sh
+export COPY_SERVICE KRB5_REALM KRB5_KDC
 
-[ "$#" -ne 0  ] && exec "$@"
+/container/config.sh
+chgrp openldap /var/run/saslauthd
+
+if [ "$#" -ne 0  ]; then
+    echo "$#";
+    "$@";
+    tail -f /dev/null;
+fi
 
 if [ "$COPY_SERVICE" = "1" ]; then
     exec /container/tool/run --copy-service --loglevel debug;
