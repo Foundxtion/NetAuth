@@ -109,6 +109,8 @@ kadmin.local -q "addprinc -pw ${KRB_ADMIN_PASSWORD} admin/admin@${KRB_REALM}"
 debug_echo "Creating ldap keytab"
 kadmin.local -q "addprinc -randkey ldap/${DOMAIN_NAME}"
 kadmin.local -q "ktadd -k /etc/krb5.keytab ldap/${DOMAIN_NAME}"
+kadmin.local -q "addprinc -randkey host/${DOMAIN_NAME}"
+kadmin.local -q "ktadd -k /etc/krb5.keytab host/${DOMAIN_NAME}"
 
 chown root:openldap /etc/krb5.keytab
 chmod 0640 /etc/krb5.keytab

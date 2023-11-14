@@ -77,6 +77,7 @@ ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /container/schemas/modify/03-kerberos_
 
 echo "SASL_MECH GSSAPI" >> /etc/ldap/ldap.conf
 echo "SASL_REALM ${KRB_REALM}" >> /etc/ldap/ldap.conf
+echo "SASL_NOCANON on" >> /etc/ldap/ldap.conf
 
 debug_echo "Changing olcAuthzRegexp"
 ldapmodify -H ldapi:/// -Y EXTERNAL -f /container/schemas/modify/04-auth-regexp.ldif
