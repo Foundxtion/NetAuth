@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  netauth:
+    hostname: "example.com"
+    container_name: "netauth"
+    build: "./image"
+    image: "netauth"
+    ports:
+      - "636:636"
+      - "389:389"
+      - "464:464"
+      - "88:88"
+      - "749:749"
+    restart: always
+    environment:
+      - LDAP_ORGANISATION=Example
+      - KRB_REALM=EXAMPLE.COM
+      - KRB_ADMIN_PASSWORD=admin
+      - LDAP_ADMIN_PASSWORD=admin
+      - KRB_MASTER_PASSWORD=master_password
+      - KDC_PASSWORD=kdc_password
+      - KADMIN_PASSWORD=kadmin_password
