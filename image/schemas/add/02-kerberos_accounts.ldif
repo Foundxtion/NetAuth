@@ -1,0 +1,13 @@
+dn: uid=kdc,{{ LDAP_DN }}
+uid: kdc
+objectClass: account
+objectClass: simpleSecurityObject
+userPassword: {CRYPT}x
+description: Kerberos KDC Account
+
+dn: uid=kadmin,{{ LDAP_DN }}
+uid: kadmin
+objectClass: account
+objectClass: simpleSecurityObject
+userPassword: {CRYPT}x
+description: Kerberos Admin Server Account

@@ -1,0 +1,4 @@
+dn: cn=config
+changetype: modify
+add: olcSaslRealm
+olcSaslRealm: {{ KRB_REALM }}
