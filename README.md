@@ -1,6 +1,7 @@
-# Janus
-In the Roman Mythology, Janus was the God of Gates, Doorways... While this repository is *obviously* not a roman God, it aims to provide some authentication mechanisms simply and quickly deployable for Foundxtion deployed machines. 
+# NetAuth
+NetAuth is a single docker image that implements a lightweight identity and access manager with tools already established in the industry. NetAuth aims to provide network authentication mechanisms simply and quickly deployable on Foundxtion deployed machines. 
 
-# Used in Janus
-- The docker image from `osixia/docker-openldap` in order to deploy a simple container openldap server.
-- A fork of the docker image available at: https://gitlab.cri.epita.fr/cri/docker/kerberos for a kerberos service backed by an openldap database.
+# Used in NetAuth
+- An OpenLDAP server used for managing identity of an organization which uses Foundxtion.
+- A KerberosV5 setup with kdc and kadmin servers used for handling authentication mechanisms.
+- A SASLAuthd gateway used by OpenLDAP server to contact the kdc service when user is attempting to identify itself through OpenLDAP. 
