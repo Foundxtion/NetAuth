@@ -46,6 +46,7 @@ create_slapd_conf()
 {
     cat > /usr/lib/sasl2/slapd.conf <<-EOF
 keytab: /etc/krb5.keytab
+sasl-host: ${DOMAIN_NAME}
 pwcheck_method: saslauthd
 saslauthd_path: /var/run/saslauthd/mux
 EOF

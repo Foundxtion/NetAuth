@@ -2,3 +2,6 @@ dn: cn=config
 changetype: modify
 add: olcSaslRealm
 olcSaslRealm: {{ KRB_REALM }}
+-
+add: olcSaslHost
+olcSaslHost: {{ DOMAIN_NAME }}
