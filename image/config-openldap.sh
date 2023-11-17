@@ -87,3 +87,13 @@ ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /container/schemas/modify/05-sasl.ldif
 
 debug_echo "Added LDAP groups"
 ldapadd -x -D ${LDAP_ADMIN_DN} -w "${LDAP_ADMIN_PASSWORD}" -f /container/schemas/add/06-ldap_groups.ldif
+
+if [ "$SSL_ENABLE" = "1" ]; then
+    debug_echo "Configure ssl connection";
+    debug_echo "set access available to certificates";
+    find /certificates | xargs chown openldap:openldap
+    debug_echo "Added ssl configuration to ldap";
+    ldapmodify -Y EXTERNAL -H ldapi:/// -f /container/schemas/modify/07-ssl_add.ldif
+    debug_echo "Added certificates to ldap";
+    ldapmodify -Y EXTERNAL -H ldapi:/// -f /container/schemas/modify/08-certificates_add.ldif
+fi

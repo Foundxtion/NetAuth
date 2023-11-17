@@ -38,7 +38,7 @@ create_global_var()
 
     export KRB_CONTAINER_DN="cn=krbContainer,${LDAP_DN}"
     export KRB5_KTNAME="/etc/krb5.keytab"
-
+    export SSL_ENABLE=${SSL_ENABLE:-0}
 }
 
 replace_file()
@@ -58,6 +58,14 @@ replace_file()
 
 debug_echo() {
     echo "[DEBUG] --- $@";
+}
+
+slapd_listener() {
+    if [ "$SSL_ENABLE" = "0" ]; then
+        echo "ldapi:// ldap://";
+    else
+        echo "ldapi:// ldap:// ldaps://";
+    fi
 }
 
 configuration() {
@@ -80,7 +88,8 @@ configuration() {
 launch_app() {
     debug_echo "Launching Bundle";
     debug_echo "Launching slapd";
-    /usr/sbin/slapd -h "ldapi:// ldap://" -u openldap -g openldap -d 256 &
+    listener=$(slapd_listener;)
+    /usr/sbin/slapd -h "$listener" -u openldap -g openldap -d 256 &
     sleep 5;
     debug_echo "Launching kadmind";
     /usr/sbin/kadmind -nofork &

@@ -1,0 +1,13 @@
+dn: cn=config
+changetype: modify
+add: olcTLSCipherSuite
+olcTLSCipherSuite: NORMAL
+-
+add: olcTLSCRLCheck
+olcTLSCRLCheck: none
+-
+add: olcTLSVerifyClient
+olcTLSVerifyClient: never
+-
+add: olcTLSProtocolMin
+olcTLSProtocolMin: 3.3

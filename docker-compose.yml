@@ -20,3 +20,4 @@ services:
       - KRB_MASTER_PASSWORD=master_password
       - KDC_PASSWORD=kdc_password
       - KADMIN_PASSWORD=kadmin_password
+      - SSL_ENABLE=1
