@@ -64,8 +64,12 @@ slapd_listener() {
     if [ "$SSL_ENABLE" = "0" ]; then
         echo "ldapi:// ldap://";
     else
-        echo "ldapi:// ldap:// ldaps://";
+        echo "ldapi:// ldaps://";
     fi
+}
+
+stop_netauth() {
+    pkill tail;
 }
 
 configuration() {
@@ -75,8 +79,8 @@ configuration() {
     replace_file "/container/config-slapd.sh";
     debug_echo "Launching configuration";
     /container/config-slapd.sh;
-    /usr/sbin/slapd -h "ldapi:// ldap://" -u openldap -g openldap
-    sleep 5;
+    /usr/sbin/slapd -h "ldapi:// ldap://" -u openldap -g openldap;
+    sleep 10;
     /container/config-openldap.sh
     /container/config-kerberos.sh
 
@@ -98,8 +102,10 @@ launch_app() {
     /usr/sbin/krb5kdc -n &
     sleep 5;
     /usr/sbin/saslauthd -a kerberos5 -d &
+    trap "stop_netauth" TERM INT;
 }
 
+ulimit -n 1024;
 create_global_var;
 debug_echo "realm: ${KRB_REALM}";
 debug_echo "ldap dn: ${LDAP_DN}";
