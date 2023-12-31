@@ -86,7 +86,7 @@ configuration() {
 
     pkill slapd;
 
-    touch canary;
+    touch /var/lib/canary;
 }
 
 launch_app() {
@@ -109,7 +109,7 @@ ulimit -n 1024;
 create_global_var;
 debug_echo "realm: ${KRB_REALM}";
 debug_echo "ldap dn: ${LDAP_DN}";
-[ ! -e /container/canary ] && configuration;
+[ ! -e /var/lib/canary ] && configuration;
 launch_app;
 
 tail -f /dev/null

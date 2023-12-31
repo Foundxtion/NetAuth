@@ -14,6 +14,6 @@ send "admin\r"
 expect "Do you want the database to be removed when slapd is purged?"
 send "yes\r"
 expect "Move old database?"
-send "no\r"
+send "yes\r"
 expect eof
 
