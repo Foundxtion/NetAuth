@@ -90,6 +90,11 @@ configuration() {
 }
 
 launch_app() {
+
+    if [ "$SSL_ENABLE" = "1" ]; then
+        find /certificates | xargs chown openldap:openldap
+    fi
+
     debug_echo "Launching Bundle";
     debug_echo "Launching slapd";
     listener=$(slapd_listener;)
