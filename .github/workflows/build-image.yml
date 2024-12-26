@@ -28,6 +28,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: s3l4h/netauth
+          tags: |
+            type=raw,value=latest
 
       - name: Build and push Docker image
         id: push
@@ -36,6 +38,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            type=raw,value=latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
