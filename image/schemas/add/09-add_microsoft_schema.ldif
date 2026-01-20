@@ -1,0 +1,9 @@
+dn: cn=microsoft,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: microsoft
+olcAttributeTypes: ( 1.2.840.113556.1.4.656 
+  NAME 'userPrincipalName' 
+  EQUALITY caseIgnoreMatch 
+  SUBSTR caseIgnoreSubstringsMatch 
+  SYNTAX '1.3.6.1.4.1.1466.115.121.1.15' 
+  SINGLE-VALUE )
