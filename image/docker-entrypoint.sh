@@ -26,7 +26,7 @@ create_global_var()
     export KRB_ADMIN_PASSWORD=${KRB_ADMIN_PASSWORD:-admin}
     
     export KRB_REALM=${KRB_REALM:-EXAMPLE.COM}
-    export DOMAIN_NAME=$(to_lower "$KRB_REALM")
+	export DOMAIN_NAME=${DOMAIN_NAME:-$(to_lower "$KRB_REALM")}
     export LDAP_DN=$(create_dn "$KRB_REALM")
     export LDAP_ORGANISATION=${LDAP_ORGANISATION:-EXAMPLE.COM}
 
@@ -79,6 +79,7 @@ configuration() {
     replace_file "/container/config-slapd.sh";
     debug_echo "Launching configuration";
     /container/config-slapd.sh;
+	mkdir -p /var/run/slapd && chown openldap:openldap /var/run/slapd;
     /usr/sbin/slapd -h "ldapi:// ldap://" -u openldap -g openldap;
     sleep 10;
     /container/config-openldap.sh
