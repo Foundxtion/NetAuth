@@ -26,6 +26,7 @@ create_global_var()
     export KRB_ADMIN_PASSWORD=${KRB_ADMIN_PASSWORD:-admin}
     
     export KRB_REALM=${KRB_REALM:-EXAMPLE.COM}
+	export LDAP_REALM=$(to_lower "$KRB_REALM")
 	export DOMAIN_NAME=${DOMAIN_NAME:-$(to_lower "$KRB_REALM")}
     export LDAP_DN=$(create_dn "$KRB_REALM")
     export LDAP_ORGANISATION=${LDAP_ORGANISATION:-EXAMPLE.COM}
@@ -53,6 +54,7 @@ replace_file()
     sed -i "s/{{ LDAP_ORGANISATION }}/${LDAP_ORGANISATION}/g" "$file"
     sed -i "s/{{ KRB_REALM }}/${KRB_REALM}/g" "$file"
     sed -i "s/{{ DOMAIN_NAME }}/${DOMAIN_NAME}/g" "$file"
+    sed -i "s/{{ LDAP_REALM }}/${LDAP_REALM}/g" "$file"
 }
 
 

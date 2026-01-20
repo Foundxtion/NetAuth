@@ -1,5 +1,5 @@
 dn: cn=config
 changeType: modify
 replace: olcAuthzRegexp
-olcAuthzRegexp: {0}"uid=([^/]*)/admin,(cn={{ DOMAIN_NAME }},)?cn=gssapi,cn=auth" "{{ LDAP_ADMIN_DN }}"
-olcAuthzRegexp: {1}"uid=([^/]*),(cn={{ DOMAIN_NAME }},)?cn=gssapi,cn=auth" "uid=$1,ou=People,{{ LDAP_DN }}"
+olcAuthzRegexp: {0}"uid=([^/]*)/admin,(cn={{ LDAP_REALM }},)?cn=gssapi,cn=auth" "{{ LDAP_ADMIN_DN }}"
+olcAuthzRegexp: {1}"uid=([^/]*),(cn={{ LDAP_REALM }},)?cn=gssapi,cn=auth" "uid=$1,ou=People,{{ LDAP_DN }}"

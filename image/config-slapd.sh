@@ -4,7 +4,7 @@ spawn dpkg-reconfigure slapd
 expect "Omit OpenLDAP server configuration?"
 send "no\r"
 expect "DNS domain name:"
-send "{{ DOMAIN_NAME }}\r"
+send "{{ LDAP_REALM }}\r"
 expect "Organization name:"
 send "{{ LDAP_ORGANISATION }}\r"
 expect "Administrator password:"
