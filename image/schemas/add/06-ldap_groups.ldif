@@ -6,7 +6,8 @@ dn: ou=Groups,{{ LDAP_DN }}
 objectClass: organizationalUnit
 ou: Groups
 
-dn: cn=storers,ou=Groups,{{ LDAP_DN }}
+dn: cn=Employees,ou=Groups,{{ LDAP_DN }}
+objectClass: top
 objectClass: posixGroup
-cn: storers
-gidNumber: 10001
+cn: Employees
+gidNumber: 100
