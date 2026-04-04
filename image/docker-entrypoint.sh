@@ -74,22 +74,51 @@ stop_netauth() {
     pkill tail;
 }
 
-configuration() {
-    for path in $(find /container/schemas -iname "0*"); do
+initialization() {
+	mkdir -p /netauth;
+    for path in $(find /container/schemas -type f -iname "0*"); do
         replace_file "$path";
     done
-    replace_file "/container/config-slapd.sh";
-    debug_echo "Launching configuration";
-    /container/config-slapd.sh;
-	mkdir -p /var/run/slapd && chown openldap:openldap /var/run/slapd;
-    /usr/sbin/slapd -h "ldapi:// ldap://" -u openldap -g openldap;
+    for path in $(find /container/config-templates -type f); do
+        replace_file "$path";
+		cp "$path" "/netauth/$(basename "$path")";
+    done
+
+    replace_file "/container/init-slapd.sh";
+    debug_echo "Launching initialization";
+    /container/init-slapd.sh;
+	create_symbol_links "init";
+	sleep 60;
+    /usr/sbin/slapd -h "ldapi:// ldap://" -u openldap -g openldap -d 256;
     sleep 10;
-    /container/config-openldap.sh
-    /container/config-kerberos.sh
+    /container/init-openldap.sh
+    /container/init-kerberos.sh
 
     pkill slapd;
 
     touch /var/lib/canary;
+}
+
+create_symbol_links() {
+	mkdir -p /netauth/lib/ldap /netauth/slapd.d;
+	mkdir -p /var/run/slapd && chown openldap:openldap /var/run/slapd;
+	ln -s -f /netauth/krb5.conf /etc/krb5.conf
+	ln -s -f /netauth/kdc.conf /etc/krb5kdc/kdc.conf
+	ln -s -f /netauth/kadm5.acl /etc/krb5kdc/kadm5.acl
+	ln -s -f /netauth/service.keyfile /etc/krb5kdc/service.keyfile
+	ln -s -f /netauth/krb5.keytab /etc/krb5.keytab
+	ln -s -f /netauth/slapd.conf /usr/lib/sasl2/slapd.conf
+	ln -s -f /netauth/slapd.conf /etc/ldap/slapd.conf
+
+	if [ "$1" = "init" ]; then
+		mv /var/lib/ldap /netauth/lib/ldap;
+		mv /etc/ldap/slapd.d /netauth/slapd.d;
+		mv /etc/default/slapd /netauth/slapd;
+	fi
+	ln -s -f /netauth/ldap.conf /etc/ldap/ldap.conf
+	ln -s -f /netauth/slapd /etc/default/slapd
+	ln -s -f /netauth/lib/ldap /var/lib/ldap
+	ln -s -f /netauth/slapd.d /etc/ldap/slapd.d
 }
 
 launch_app() {
@@ -117,7 +146,12 @@ ulimit -n 1024;
 create_global_var;
 debug_echo "realm: ${KRB_REALM}";
 debug_echo "ldap dn: ${LDAP_DN}";
-[ ! -e /var/lib/canary ] && configuration;
-launch_app;
+if [ ! -e /var/lib/canary ]; then
+	initialization;
+	launch_app;
+else
+	create_symbol_links;
+	launch_app;
+fi
 
 tail -f /dev/null
