@@ -27,7 +27,7 @@ create_global_var()
     
     export KRB_REALM=${KRB_REALM:-EXAMPLE.COM}
 	export LDAP_REALM=$(to_lower "$KRB_REALM")
-	export DOMAIN_NAME=${DOMAIN_NAME:-$(to_lower "$KRB_REALM")}
+	export DOMAIN_NAME=$(hostname --fqdn)
     export LDAP_DN=$(create_dn "$KRB_REALM")
     export LDAP_ORGANISATION=${LDAP_ORGANISATION:-EXAMPLE.COM}
 
@@ -88,8 +88,7 @@ initialization() {
     debug_echo "Launching initialization";
     /container/init-slapd.sh;
 	create_symbol_links "init";
-	sleep 60;
-    /usr/sbin/slapd -h "ldapi:// ldap://" -u openldap -g openldap -d 256;
+    /usr/sbin/slapd -F /etc/ldap/slapd.d -h "ldapi:// ldap://" -u openldap -g openldap;
     sleep 10;
     /container/init-openldap.sh
     /container/init-kerberos.sh
@@ -100,18 +99,19 @@ initialization() {
 }
 
 create_symbol_links() {
-	mkdir -p /netauth/lib/ldap /netauth/slapd.d;
-	mkdir -p /var/run/slapd && chown openldap:openldap /var/run/slapd;
+	mkdir /var/lib/ldap
+	mkdir -p /etc/sasl2/ /var/run/slapd && chown openldap:openldap /var/run/slapd;
 	ln -s -f /netauth/krb5.conf /etc/krb5.conf
 	ln -s -f /netauth/kdc.conf /etc/krb5kdc/kdc.conf
 	ln -s -f /netauth/kadm5.acl /etc/krb5kdc/kadm5.acl
 	ln -s -f /netauth/service.keyfile /etc/krb5kdc/service.keyfile
 	ln -s -f /netauth/krb5.keytab /etc/krb5.keytab
 	ln -s -f /netauth/slapd.conf /usr/lib/sasl2/slapd.conf
-	ln -s -f /netauth/slapd.conf /etc/ldap/slapd.conf
+	ln -s -f /netauth/slapd.conf /etc/sasl2/slapd.conf
 
 	if [ "$1" = "init" ]; then
-		mv /var/lib/ldap /netauth/lib/ldap;
+		mkdir -p /netauth/lib;
+		mv /var/lib/ldap /netauth/lib;
 		mv /etc/ldap/slapd.d /netauth/slapd.d;
 		mv /etc/default/slapd /netauth/slapd;
 	fi
@@ -119,6 +119,13 @@ create_symbol_links() {
 	ln -s -f /netauth/slapd /etc/default/slapd
 	ln -s -f /netauth/lib/ldap /var/lib/ldap
 	ln -s -f /netauth/slapd.d /etc/ldap/slapd.d
+	chown -R openldap:openldap /netauth/lib;
+	chown -R openldap:openldap /netauth/slapd.d;
+	chown -R openldap:openldap /var/lib/ldap;
+	chown -R openldap:openldap /etc/ldap/ldap.conf;
+	chown -R openldap:openldap /etc/ldap/slapd.d;
+	chown -R openldap:openldap /var/lib/ldap;
+	chown -R openldap:openldap /etc/default/slapd;
 }
 
 launch_app() {
@@ -130,7 +137,7 @@ launch_app() {
     debug_echo "Launching Bundle";
     debug_echo "Launching slapd";
     listener=$(slapd_listener;)
-    /usr/sbin/slapd -h "$listener" -u openldap -g openldap -d 256 &
+    /usr/sbin/slapd -F /etc/ldap/slapd.d -h "$listener" -u openldap -g openldap -d 256 &
     sleep 5;
     debug_echo "Launching kadmind";
     /usr/sbin/kadmind -nofork &
