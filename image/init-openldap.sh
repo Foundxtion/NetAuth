@@ -44,12 +44,6 @@ EOF
 
 create_slapd_conf()
 {
-    cat > /usr/lib/sasl2/slapd.conf <<-EOF
-keytab: /etc/krb5.keytab
-sasl-host: ${DOMAIN_NAME}
-pwcheck_method: saslauthd
-saslauthd_path: /var/run/saslauthd/mux
-EOF
     adduser openldap sasl;
 }
 
@@ -75,10 +69,6 @@ set_ldap_pwd "${LDAP_KDC_DN}" "${KDC_PASSWORD}"
 
 debug_echo "Change access rules for kerberos accounts"
 ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /container/schemas/modify/03-kerberos_access.ldif
-
-echo "SASL_MECH GSSAPI" >> /etc/ldap/ldap.conf
-echo "SASL_REALM ${KRB_REALM}" >> /etc/ldap/ldap.conf
-echo "SASL_NOCANON on" >> /etc/ldap/ldap.conf
 
 debug_echo "Changing olcAuthzRegexp"
 ldapmodify -H ldapi:/// -Y EXTERNAL -f /container/schemas/modify/04-auth-regexp.ldif
