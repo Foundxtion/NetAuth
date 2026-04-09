@@ -1,5 +1,13 @@
 #!/bin/sh
 
+to_upper()
+{
+    str="$1";
+    lower=$(echo "$str" | tr 'qwertyuiopasdfghjklzxcvbnm' 'QWERTYUIOPASDFGHJKLZXCVBNM')
+
+    echo "$lower"
+}
+
 to_lower()
 {
     str="$1";
@@ -12,7 +20,7 @@ create_dn()
 {
     realm="$1";
     lower_realm=$(to_lower "$realm")
-    dn=$(echo "$lower_realm" | sed "s/\./,dc=/")
+    dn=$(echo "$lower_realm" | sed "s/\./,dc=/g")
     echo "dc=$dn"
 }
 
@@ -25,7 +33,7 @@ create_global_var()
     export KRB_MASTER_PASSWORD=${KRB_MASTER_PASSWORD:-master_password}
     export KRB_ADMIN_PASSWORD=${KRB_ADMIN_PASSWORD:-admin}
     
-    export KRB_REALM=${KRB_REALM:-EXAMPLE.COM}
+	export KRB_REALM=$(to_upper ${KRB_REALM:-EXAMPLE.COM})
 	export LDAP_REALM=$(to_lower "$KRB_REALM")
 	export DOMAIN_NAME=$(hostname --fqdn)
     export LDAP_DN=$(create_dn "$KRB_REALM")
