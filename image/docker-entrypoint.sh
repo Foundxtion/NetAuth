@@ -95,7 +95,7 @@ initialization() {
 
     pkill slapd;
 
-    touch /var/lib/canary;
+    touch /netauth/canary;
 }
 
 create_symbol_links() {
@@ -153,7 +153,7 @@ ulimit -n 1024;
 create_global_var;
 debug_echo "realm: ${KRB_REALM}";
 debug_echo "ldap dn: ${LDAP_DN}";
-if [ ! -e /var/lib/canary ]; then
+if [ ! -e /netauth/canary ]; then
 	initialization;
 	launch_app;
 else
