@@ -125,7 +125,7 @@ create_symbol_links() {
 	fi
 	ln -s -f /netauth/ldap.conf /etc/ldap/ldap.conf
 	ln -s -f /netauth/slapd /etc/default/slapd
-	ln -s -f /netauth/lib/ldap /var/lib/ldap
+	ln -s -f /netauth/lib/ldap /var/lib/
 	ln -s -f /netauth/slapd.d /etc/ldap/slapd.d
 	chown -R openldap:openldap /netauth/lib;
 	chown -R openldap:openldap /netauth/slapd.d;
