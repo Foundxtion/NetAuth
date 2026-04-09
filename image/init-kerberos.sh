@@ -51,3 +51,6 @@ chown root:openldap /netauth/krb5.keytab
 chmod 0640 /netauth/krb5.keytab
 
 sed -i "s/#KRB5_KTNAME=\/etc\/krb5.keytab/KRB5_KTNAME=\/netauth\/krb5.keytab/g" /netauth/slapd;
+
+debug_echo "Kerberos initialization complete: save master password file"
+cp ".k5.${KRB_REALM}" /netauth/.k5.${KRB_REALM}

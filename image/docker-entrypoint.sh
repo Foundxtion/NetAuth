@@ -127,6 +127,7 @@ create_symbol_links() {
 	ln -s -f /netauth/slapd /etc/default/slapd;
 	rm -rf /var/lib/ldap; ln -s -f /netauth/lib/ldap /var/lib/ldap;
 	rm -rf /etc/ldap/slapd.d; ln -s -f /netauth/slapd.d /etc/ldap/slapd.d;
+	rm -f /etc/krb5kdc/.k5.${KRB_REALM}; ln -s -f /netauth/.k5.${KRB_REALM} /etc/krb5kdc/.k5.${KRB_REALM};
 	chown -R openldap:openldap /netauth/lib;
 	chown -R openldap:openldap /netauth/slapd.d;
 	chown -R openldap:openldap /var/lib/ldap;
