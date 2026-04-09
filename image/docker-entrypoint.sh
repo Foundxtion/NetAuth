@@ -123,10 +123,10 @@ create_symbol_links() {
 		mv /etc/ldap/slapd.d /netauth/slapd.d;
 		mv /etc/default/slapd /netauth/slapd;
 	fi
-	ln -s -f /netauth/ldap.conf /etc/ldap/ldap.conf
-	ln -s -f /netauth/slapd /etc/default/slapd
-	ln -s -f /netauth/lib/ldap /var/lib/
-	ln -s -f /netauth/slapd.d /etc/ldap/slapd.d
+	ln -s -f /netauth/ldap.conf /etc/ldap/ldap.conf;
+	ln -s -f /netauth/slapd /etc/default/slapd;
+	rm -rf /var/lib/ldap; ln -s -f /netauth/lib/ldap /var/lib/ldap;
+	rm -rf /etc/ldap/slapd.d; ln -s -f /netauth/slapd.d /etc/ldap/slapd.d;
 	chown -R openldap:openldap /netauth/lib;
 	chown -R openldap:openldap /netauth/slapd.d;
 	chown -R openldap:openldap /var/lib/ldap;
