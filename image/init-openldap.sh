@@ -42,12 +42,6 @@ EOF
     echo "";
 }
 
-create_slapd_conf()
-{
-    adduser openldap sasl;
-}
-
-create_slapd_conf;
 debug_echo "Check config tree after initial installation:"
 ldapsearch -LLLQ -Y EXTERNAL -H ldapi:/// -b cn=config dn
 debug_echo "Check done"

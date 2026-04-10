@@ -4,4 +4,4 @@ add: olcSaslRealm
 olcSaslRealm: {{ KRB_REALM }}
 -
 add: olcSaslHost
-olcSaslHost: {{ DOMAIN_NAME }}
+olcSaslHost: {{ LDAP_REALM }}

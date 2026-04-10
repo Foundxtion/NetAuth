@@ -37,9 +37,9 @@ debug_echo "Creating Kerberos admin/admin principal"
 kadmin.local -q "addprinc -pw ${KRB_ADMIN_PASSWORD} admin/admin@${KRB_REALM}"
 
 debug_echo "Creating LDAP keytab"
-# yes I know that for the moment it's the same values...
-principals=$(unique "${DOMAIN_NAME}" "$(hostname -f)")
-for princ in ${DOMAIN_NAME}; do
+
+principals=$(unique "${DOMAIN_NAME}" "${LDAP_REALM}")
+for princ in $principals; do
 	kadmin.local -q "addprinc -randkey ldap/${princ}"
 	kadmin.local -q "ktadd -k /netauth/krb5.keytab ldap/${princ}"
 	kadmin.local -q "addprinc -randkey host/${princ}"
@@ -53,4 +53,4 @@ chmod 0640 /netauth/krb5.keytab
 sed -i "s/#KRB5_KTNAME=\/etc\/krb5.keytab/KRB5_KTNAME=\/netauth\/krb5.keytab/g" /netauth/slapd;
 
 debug_echo "Kerberos initialization complete: save master password file"
-cp ".k5.${KRB_REALM}" /netauth/.k5.${KRB_REALM}
+cp "/etc/krb5kdc/.k5.${KRB_REALM}" /netauth/.k5.${KRB_REALM}
