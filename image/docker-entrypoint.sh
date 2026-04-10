@@ -107,6 +107,7 @@ initialization() {
 }
 
 create_symbol_links() {
+	adduser openldap sasl;
 	mkdir /var/lib/ldap
 	mkdir -p /etc/sasl2/ /var/run/slapd && chown openldap:openldap /var/run/slapd;
 	ln -s -f /netauth/krb5.conf /etc/krb5.conf
